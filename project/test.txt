@@ -1,2 +1,2 @@
 Vamos fazer um file de teste
-Esta é a segunda linha
+Esta e a segunda linha.

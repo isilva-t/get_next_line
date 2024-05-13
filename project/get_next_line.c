@@ -14,27 +14,27 @@
 
 void	*ft_ultra_calloc(size_t mem, size_t size)
 {
-	char	*ptr;
+	unsigned char	*ptr;
 	int		i;
 	
 	i = 0;
-	ptr = malloc(sizeof(mem * size));
+	// used sizeofchar here, but no need it.
+	ptr = malloc(sizeof(char)*mem * size);
 	if (!ptr)
 		return (NULL);
+	//MINI BZERO HERE
 	while (i < mem * size)
 		ptr[i++] = '\0';
 	return ((void *)ptr);
 }
 
-
-
-void	ft_print_newline_helper(char *buffer)
+void	ft_newline_happen(char *buffer)
 {
 	while (*buffer)
 	{
 		if (*buffer == '\n')
-			*buffer = '\\';
-		printf("%c", *buffer);
+			write(1, "here! ", 6);
+		//printf("%c", *buffer);
 		buffer++;
 	}
 }
@@ -45,12 +45,12 @@ static char	*ft_read_from_file(int fd)
 	char	*str;
 	static int	count = 1;
 
-	printf("MalLOC[%d]---", count++);
+	printf("ft_CalLOC[%d]---", count++);
 	str = (char *)ft_ultra_calloc((BUFFER_SIZE + 1), 1);
 	if (!str)
 		return (NULL);
 	rd_bytes = read(fd, str, BUFFER_SIZE);
-	ft_print_newline_helper(str);
+	ft_newline_happen(str);
 	if (rd_bytes <= 0)
 		return (free(str), NULL);
 	return (str);
