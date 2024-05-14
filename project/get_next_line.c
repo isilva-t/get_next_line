@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-static char	*read_line(int fd, char *buf, char *backup)
+static char	*ft_read_line(int fd, char *buf, char *backup_static)
 {
 	int		check;
 	char	*temp;
@@ -31,9 +31,9 @@ static char	*read_line(int fd, char *buf, char *backup)
 		if (!backup)
 			backup = ft_strdup("");
 		/*********************************************************/		
-		temp = backup;
+		temp = backup_static;
 		backup = (ft_strjoin(temp, buf));
-		if (!backup)
+		if (!backup_static)
 			return (NULL);
 		/*********************************************************/		
 		free (temp);
@@ -46,7 +46,7 @@ static char	*read_line(int fd, char *buf, char *backup)
 	return (backup);
 }
 
-static char	*extract(char *line)
+static char	*ft_rest(char *line)
 {
 	int		i;
 	char	*temp;
@@ -76,7 +76,7 @@ char	*get_next_line(int fd)
 {
 	char		*buf;
 	char		*line;
-	static char	*backup;
+	static char	*backup_static;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -85,13 +85,13 @@ char	*get_next_line(int fd)
 	if (!buf)
 		return (NULL);
 	/*********************************************************/	
-	line = read_line(fd, buf, backup);
+	line = ft_read_line(fd, buf, backup_static);
 	free(buf);
 	/*********************************************************/
 	if (!line)
 		return (NULL);
 	/*********************************************************/	
-	backup = extract(line);
+	backup = ft_rest(line);
 	/*********************************************************/
 	return (line);
 }
