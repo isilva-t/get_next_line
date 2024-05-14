@@ -3,95 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <username@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/10 17:07:40 by username          #+#    #+#             */
-/*   Updated: 2024/05/10 19:26:59 by username         ###   ########.fr       */
+/*   Created: 2024/05/14 12:38:54 by isilva-t          #+#    #+#             */
+/*   Updated: 2024/05/14 15:13:33 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	*ft_ultra_calloc(size_t mem, size_t size)
+static char	*read_line(int fd, char *buf, char *backup)
 {
-	unsigned char	*ptr;
-	int		i;
-	
-	i = 0;
-	// used sizeofchar here, but no need it.
-	ptr = malloc(sizeof(char)*mem * size);
-	if (!ptr)
-		return (NULL);
-	//MINI BZERO HERE
-	while (i < mem * size)
-		ptr[i++] = '\0';
-	return ((void *)ptr);
-}
+	int		check;
+	char	*temp;
 
-void	ft_newline_happen(char *buffer)
-{
-	while (*buffer)
+	check = 1;
+	while (check)
 	{
-		if (*buffer == '\n')
-			write(1, "here! ", 6);
-		//printf("%c", *buffer);
-		buffer++;
+		check = read(fd, buf, BUFFER_SIZE);
+		if (check == -1)
+			return (0);
+		else if (check == 0)
+			break ;
+		/*********************************************************/	
+		buf[check] = '\0';
+		/*********************************************************/	
+		if (!backup)
+			backup = ft_strdup("");
+		/*********************************************************/		
+		temp = backup;
+		backup = (ft_strjoin(temp, buf));
+		if (!backup)
+			return (NULL);
+		/*********************************************************/		
+		free (temp);
+		temp = NULL;
+		/*********************************************************/	
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
+	/*********************************************************/
+	return (backup);
 }
 
-static char	*ft_read_from_file(int fd)
+static char	*extract(char *line)
 {
-	int		rd_bytes;
-	char	*str;
-	static int	count = 1;
+	int		i;
+	char	*temp;
 
-	printf("ft_CalLOC[%d]---", count++);
-	str = (char *)ft_ultra_calloc((BUFFER_SIZE + 1), 1);
-	if (!str)
+	i = 0;
+	while (line[i] != '\0' && line[i] != '\n')
+		i++;
+	if (line[i] == '\0')
 		return (NULL);
-	rd_bytes = read(fd, str, BUFFER_SIZE);
-	ft_newline_happen(str);
-	if (rd_bytes <= 0)
-		return (free(str), NULL);
-	return (str);
+	/*********************************************************/
+	temp = ft_substr(line, i + 1, ft_strlen(line) - i);
+	if (!temp)
+		return (NULL);
+	if (temp[0] == '\0')
+	{
+		free (temp);
+		temp = NULL;
+		return (NULL);
+	}
+	/*********************************************************/
+	line[i + 1] = '\0';
+	/*********************************************************/
+	return (temp);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
+	char		*buf;
+	char		*line;
+	static char	*backup;
 
-	buffer = ft_read_from_file(fd);
-	return (buffer);
-
-}
-int	main(void)
-{
-	int		fd;
-	char	*next_line;
-	int		i;
-	
-	i = 0;
-	// include "fcntl.h" to use O_RDONLY right?
-	fd = open("test.txt", O_RDONLY);
-	
-	//why this special case?
-	if (fd == -1)
-	{
-		printf("error opening file");
-		return (1);
-	}
-	//WHILE 1 WHY?!?!?!?
-	while (1)
-	{
-		next_line = get_next_line(fd);
-		if (!next_line)
-			//free (next_line);
-				break ;
-		i++;
-		printf("[%d]:%s\n", i, next_line);
-		free (next_line);
-		next_line = NULL;
-	}
-	close(fd);
-	return (0);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	/*********************************************************/	
+	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buf)
+		return (NULL);
+	/*********************************************************/	
+	line = read_line(fd, buf, backup);
+	free(buf);
+	/*********************************************************/
+	if (!line)
+		return (NULL);
+	/*********************************************************/	
+	backup = extract(line);
+	/*********************************************************/
+	return (line);
 }
