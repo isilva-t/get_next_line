@@ -18,39 +18,54 @@ static char	*ft_search_line(int fd, char *buf, char *backup_static)
 	char	*temp_to_free;
 
 	//read_check comeca por ter valor 1, para que o primeiro while
-	//{pelo menos} funcione, uma vez que se for menos que zero
+	//(pelo menos) funcione, uma vez que se for menos que zero
+	//nao vai funcionar
 	read_check = 1;
 	//enquanto eu tenho read_check
-printf("1_FT_SEARCH_LINE: \n");
+
 	while (read_check)
 	{
 printf("read_check before \"read\": [ %d ]\n", read_check);
 		//read_check recebe o nr de caracteres lidos
 		read_check = read(fd, buf, BUFFER_SIZE);
 
-		//se o read der erro, retorna NULL pointer, nao ha linha.
+		//se o read der erro -1, retorna NULL, nao ha linha.
 		if (read_check == -1)
 			return (NULL);
 		// se o meu read_check for zero, nao ha mais nada a ler
-		//para o while
+		//break while
 		else if (read_check == 0)
 		{
 printf("read_check AFTER \"read\" == [ 0 ]!!!!!!!!\n");
 			break ;
 		}
+		//o final do meu buffer, leva um \0 terminator
 		buf[read_check] = '\0';
-	
+		
+		// se nao tenho a backup_static
+		// a backup static e'um strdup vazio
 		if (!backup_static)
 			backup_static = ft_strdup("");
-	
+		
+		// o meu pointer temporario, recebe o pointer de backup static
+		// para poder dar free mais tarde, tendo em conta que vou usar
+		// malloc a seguir
 		temp_to_free = backup_static;
+		
+		// a backup_static, recebe o join
+		// da temp to free, e do buffer
 		backup_static = (ft_strjoin(temp_to_free, buf));
 		if (!backup_static)
 			return (NULL);
-		
+			
+		// libertamos a memoria alocada em temp to free
+		// uma vez que já temos a backup_static com o buffer
+		// e definimos o pointer como NULL
 		free (temp_to_free);
 		temp_to_free = NULL;
 
+		// se, no meu buffer eu encontrar quebra de linha
+		// break while
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
@@ -67,26 +82,33 @@ printf("********* STATIC_VARIABLE_CONTENT_IN_FT_SEARCH_LINE ********* \
 static char	*ft_rest(char *line)
 {
 	int		i;
-	char	*rest;
+	char	*rest; 
 
 	i = 0;
+	// enquanto houver, e nao for quebra de linha, i++
 	while (line[i] != '\0' && line[i] != '\n')
 		i++;
+	// se caractere atual for \0 terminattor, retorna NULL
+	// pois nao ha quebra de linha
 	if (line[i] == '\0')
 		return (NULL);
-
+	
+	// o meu resto, atraves da substr,
+	// vai buscar dados desde a quebra de linha, ate ao final
+	// dos dados existentes
 	rest = ft_substr(line, i + 1, ft_strlen(line) - i);
+	// uma vez alocada memoria, proteger a alocacao
 	if (!rest)
 		return (NULL);
-	//- preciso prevencao para se o array criado esta' vazio
-	// se sim, dar free, array a NULL, e return NULL
+	// caso o array criado esteja vazio
+	// dar free, recebe NULL, e return NULL
 	if (!rest[0])
 	{
 		free (rest);
 		rest = NULL;
 		return (NULL);
 	}
-	// preencher ultimo caractere do resto com \0 terminator
+	// feito ultimo caractere do resto com \0 terminator
 	line[i + 1] = '\0';
 
 	return (rest);
