@@ -14,25 +14,25 @@
 
 static char	*ft_read_line(int fd, char *buf, char *backup_static)
 {
-	int		check;
+	int		read_check;
 	char	*temp;
 
-	check = 1;
-	while (check)
+	read_check = 1;
+	while (read_check)
 	{
-		check = read(fd, buf, BUFFER_SIZE);
-		if (check == -1)
+		read_check = read(fd, buf, BUFFER_SIZE);
+		if (read_check == -1)
 			return (0);
-		else if (check == 0)
+		else if (read_check == 0)
 			break ;
 		/*********************************************************/	
-		buf[check] = '\0';
+		buf[read_ok] = '\0';
 		/*********************************************************/	
-		if (!backup)
-			backup = ft_strdup("");
+		if (!backup_static)
+			backup_static = ft_strdup("");
 		/*********************************************************/		
 		temp = backup_static;
-		backup = (ft_strjoin(temp, buf));
+		backup_static = (ft_strjoin(temp, buf));
 		if (!backup_static)
 			return (NULL);
 		/*********************************************************/		
@@ -43,7 +43,7 @@ static char	*ft_read_line(int fd, char *buf, char *backup_static)
 			break ;
 	}
 	/*********************************************************/
-	return (backup);
+	return (backup_static);
 }
 
 static char	*ft_rest(char *line)
