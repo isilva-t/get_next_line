@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/17 10:43:54 by isilva-t          #+#    #+#             */
-/*   Updated: 2024/05/17 11:10:58 by isilva-t         ###   ########.fr       */
+/*   Created: 2024/05/17 15:41:59 by isilva-t          #+#    #+#             */
+/*   Updated: 2024/05/17 15:42:05 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*ft_search_new_line(int fd, char *buf, char *backup_static)
 {
@@ -67,17 +67,17 @@ char	*get_next_line(int fd)
 {
 	char		*buf;
 	char		*line;
-	static char	*backup_static;
+	static char	*backup_static[OPENFD_MAX];
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
 	buf = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buf)
 		return (NULL);
-	line = ft_search_new_line(fd, buf, backup_static);
+	line = ft_search_new_line(fd, buf, backup_static[fd]);
 	free (buf);
 	if (!line)
 		return (NULL);
-	backup_static = ft_rest_to_next_call(line);
+	backup_static[fd] = ft_rest_to_next_call(line);
 	return (line);
 }

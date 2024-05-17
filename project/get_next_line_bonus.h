@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <username@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: isilva-t <isilva-t@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/10 17:01:14 by username          #+#    #+#             */
-/*   Updated: 2024/05/14 14:50:00 by isilva-t         ###   ########.fr       */
+/*   Created: 2024/05/17 15:42:18 by isilva-t          #+#    #+#             */
+/*   Updated: 2024/05/17 15:42:22 by isilva-t         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # include <stdlib.h>
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 9
+# endif
+
+# ifndef OPENFD_MAX
+#  define OPENFD_MAX 1024
 # endif
 
 char	*get_next_line(int fd);
