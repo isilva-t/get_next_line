@@ -28,11 +28,27 @@ int	main(int ac, char**av)
 	printf("=+=+=+=+=+=+=+=+=+=+=+=+=+=\n");
 	while (str)
 	{
-		printf("1_FT_get_next_line: [ %d ] \n", i);
 		str = get_next_line(fd1);
 		printf ("======================= LINE_[%d]: ====================\
-		\n%s===================================================================\n", ++i, str);
+		\n%s================================\
+		===================================\n", ++i, str);
 		free (str);
 	}
 	close(fd1);
 }
+/* FOR TESTING PROPOSES
+ft_search new line______________________________________________________________
+printf("read_check before \"read\": [ %d ]\n", read_check);
+printf("read_check AFTER if \"read\" == [ 0 ]!!!!!!!!\n");
+
+BEFORE RETURN
+if (read_check > 0)
+    printf("READ_CHECK:[ %d ]\n",  read_check);    
+printf("LAST BUFFER:[ %zd ]\n",  ft_strlen(buf));
+printf("********* STATIC_VARIABLE_CONTENT_IN_FT_SEARCH_LINE ********* \
+\n%s\n********************************************************\n", backup_static);
+
+FT_GET_NEXT_LINE____________________________________________________________
+before return
+printf("3_STATIC__AFTER__FT_REST:\n%s\n[END_STATIC]\n", backup_static);
+*/
