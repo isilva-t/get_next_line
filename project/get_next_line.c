@@ -25,7 +25,7 @@ static char	*ft_search_line(int fd, char *buf, char *backup_static)
 
 	while (read_check)
 	{
-printf("read_check before \"read\": [ %d ]\n", read_check);
+//printf("read_check before \"read\": [ %d ]\n", read_check);
 		//read_check recebe o nr de caracteres lidos
 		read_check = read(fd, buf, BUFFER_SIZE);
 
@@ -36,7 +36,7 @@ printf("read_check before \"read\": [ %d ]\n", read_check);
 		//break while
 		else if (read_check == 0)
 		{
-printf("read_check AFTER \"read\" == [ 0 ]!!!!!!!!\n");
+//printf("read_check AFTER \"read\" == [ 0 ]!!!!!!!!\n");
 			break ;
 		}
 		//o final do meu buffer, leva um \0 terminator
@@ -69,13 +69,13 @@ printf("read_check AFTER \"read\" == [ 0 ]!!!!!!!!\n");
 		if (ft_strchr(buf, '\n'))
 			break ;
 	}
-
+/*
 if (read_check > 0)
 	printf("READ_CHECK:[ %d ]\n",  read_check);	
 printf("LAST BUFFER:[ %zd ]\n",  ft_strlen(buf));
 printf("********* STATIC_VARIABLE_CONTENT_IN_FT_SEARCH_LINE ********* \
 \n%s\n********************************************************\n", backup_static);
-
+*/
 	return (backup_static);
 }
 
@@ -141,7 +141,7 @@ char	*get_next_line(int fd)
 	//depois de ter a linha a retornar, vamos buscar os restantes caracteres ao buffer
 	//(se existirem) no nosso ponteiro static
 	backup_static = ft_rest(line);
-printf("3_STATIC__AFTER__FT_REST:\n%s\n[END_STATIC]\n", backup_static);
+//printf("3_STATIC__AFTER__FT_REST:\n%s\n[END_STATIC]\n", backup_static);
 
 	//retorna a linha lida (ou ficheiro se chegar a EOF)
 	return (line);
