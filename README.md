@@ -1,5 +1,7 @@
 # Get Next Line (GNL)
 
+![Line](https://raw.githubusercontent.com/isilva-t/42.get_next_line/main/img/gnl.jpg)
+
 ## Description
 A C function that reads a line from a file descriptor. This project introduces the concept of static variables in C and provides a useful tool for reading from file descriptors line by line.
 
