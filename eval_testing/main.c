@@ -19,7 +19,8 @@ int	main(int ac, char**av)
 	int		i;
 	int		fd1;
 	char	*str;
-
+	
+	(void)ac;
 	i = 0;
 	str = "";
 	fd1 = open(av[1], O_RDONLY);
